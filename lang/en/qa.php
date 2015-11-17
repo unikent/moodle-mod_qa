@@ -35,6 +35,13 @@ $string['pluginname'] = 'Q&A';
 
 $string['qaname'] = 'Q&A name';
 
+$string['qtitle'] = 'Title';
+$string['qdesc'] = 'Description';
+$string['qanon'] = 'Post anonymously?';
+
 // Todo - decide on appropriate strings.
 $string['noquestions'] = 'There are no questions here yet!';
 $string['askquestion'] = 'Ask a question.';
+$string['event:questionposted'] = 'Question posted';
+$string['event:questionposted_desc_anon'] = 'An anonymous user posted a question with an ID of \'{$a}\'.';
+$string['event:questionposted_desc_user'] = 'The user with id \'{$a->userid}\' posted a question with an ID of \'{$a->oid}\'.';

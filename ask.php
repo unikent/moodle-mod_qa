@@ -27,23 +27,15 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
-$id = required_param('id', PARAM_INT);
-list($course, $cm) = get_course_and_cm_from_cmid($id, 'qa');
-$qa = $DB->get_record('qa', array('id' => $cm->instance));
+$qaid = required_param('qaid', PARAM_INT);
+list($course, $cm) = get_course_and_cm_from_instance($qaid, 'qa');
+$qa = $DB->get_record('qa', array('id' => $qaid));
 
 require_login($course, true, $cm);
 
-$event = \mod_qa\event\course_module_viewed::create(array(
-    'objectid' => $PAGE->cm->instance,
-    'context' => $PAGE->context,
-));
-$event->add_record_snapshot('course', $PAGE->course);
-$event->add_record_snapshot('qa', $qa);
-$event->trigger();
-
 // Print the page header.
 
-$PAGE->set_url('/mod/qa/view.php', array('id' => $cm->id));
+$PAGE->set_url('/mod/qa/ask.php', array('qaid' => $qaid));
 $PAGE->set_title(format_string($qa->name));
 $PAGE->set_heading(format_string($course->fullname));
 
@@ -51,25 +43,18 @@ $PAGE->set_heading(format_string($course->fullname));
 echo $OUTPUT->header();
 echo $OUTPUT->heading($qa->name);
 
-// Conditions to show the intro can change to look for own settings or whatever.
-if ($qa->intro) {
-    echo $OUTPUT->box(format_module_intro('qa', $qa, $cm->id), 'generalbox mod_introbox', 'qaintro');
+$form = new \mod_qa\forms\post_question();
+$form->set_data(array('qaid' => $qaid));
+if ($data = $form->get_data()) {
+    // TODO - capability checks.
+    $qaobj = \mod_qa\qa::from_db($qa);
+    $question = $qaobj->post_question($data->name, $data->desc, isset($data->anon) ? $data->anon : 0);
+    redirect(new \moodle_url('/mod/qa/question.php', array(
+        'id' => $question->id
+    )));
 }
 
-$renderer = $PAGE->get_renderer('mod_qa');
-
-// Output list of questions.
-$qaobj = \mod_qa\qa::from_db($qa);
-$questions = $qaobj->get_questions();
-if (!empty($questions)) {
-    echo $renderer->render_list($questions);
-} else {
-    echo \html_writer::tag('p', get_string('noquestions', 'mod_qa'));
-}
-
-// New question link.
-$url = new \moodle_url('/mod/qa/ask.php', array('qaid' => $qa->id));
-echo \html_writer::tag('p', \html_writer::link($url, get_string('askquestion', 'mod_qa')));
+$form->display();
 
 // Finish the page.
 echo $OUTPUT->footer();

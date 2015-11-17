@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qa
+class question
 {
     private $data;
     private $votes;
@@ -51,6 +51,20 @@ class qa
      */
     public static function from_db($data) {
         return new static($data);
+    }
+
+    /**
+     * Return data.
+     */
+    public function __get($name) {
+        return $this->data->$name;
+    }
+
+    /**
+     * Return data.
+     */
+    public function __isset($name) {
+        return isset($this->data->$name);
     }
 
     /**
@@ -74,7 +88,7 @@ class qa
 
         if (!isset($this->votes)) {
             $this->votes = $DB->count_records('qa_votes', array(
-                'qaqid' => $this->data['id']
+                'qaqid' => $this->data->id
             ));
         }
 
@@ -89,7 +103,7 @@ class qa
 
         if (!isset($this->replies)) {
             $this->replies = $DB->get_records('qa_replies', array(
-                'qaqid' => $this->data['id']
+                'qaqid' => $this->data->id
             ));
         }
 

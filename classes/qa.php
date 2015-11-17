@@ -73,10 +73,39 @@ class qa
 
         if (!isset($this->questions)) {
             $this->questions = $DB->get_records('qa_questions', array(
-                'qaid' => $this->data['id']
+                'qaid' => $this->data->id
             ));
         }
 
         return $this->questions;
+    }
+
+    /**
+     * Post a new question.
+     */
+    public function post_question($title, $contents, $anonymous = 0) {
+        global $DB, $USER, $PAGE;
+
+        $question = new \stdClass();
+        $question->qaid = $this->data->id;
+        $question->userid = $USER->id;
+        $question->anonymous = $anonymous;
+        $question->title = $title;
+        $question->contents = $contents;
+        $question->timecreated = time();
+        $question->timemodified = time();
+
+        $id = $DB->insert_record('qa_questions', $question);
+        $question->id = $id;
+
+        $event = \mod_qa\event\question_posted::create(array(
+            'objectid' => $question->id,
+            'context' => $PAGE->context,
+            'userid' => $anonymous ? 0 : $USER->id
+        ));
+        $event->add_record_snapshot('qa_questions', $question);
+        $event->trigger();
+
+        return question::from_db($question);
     }
 }
