@@ -31,7 +31,8 @@
  * @copyright 2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qa_activity_structure_step extends restore_activity_structure_step {
+class restore_qa_activity_structure_step extends restore_activity_structure_step
+{
 
     /**
      * Defines structure of path elements to be processed during the restore
@@ -39,7 +40,6 @@ class restore_qa_activity_structure_step extends restore_activity_structure_step
      * @return array of {@link restore_path_element}
      */
     protected function define_structure() {
-
         $paths = array();
         $paths[] = new restore_path_element('qa', '/activity/qa');
         $paths[] = new restore_path_element('qa_question', '/activity/qa/questions/question');
@@ -156,7 +156,7 @@ class restore_qa_activity_structure_step extends restore_activity_structure_step
     protected function after_execute() {
         // Add qa related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_qa', 'intro', null);
-        $this->add_related_files('mod_qa', 'description', null);
-        $this->add_related_files('mod_qa', 'content', null);
+        $this->add_related_files('mod_qa', 'description', 'qa_questions');
+        $this->add_related_files('mod_qa', 'content', 'qa_replies');
     }
 }

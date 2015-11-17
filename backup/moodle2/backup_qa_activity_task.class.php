@@ -35,7 +35,8 @@ require_once($CFG->dirroot . '/mod/qa/backup/moodle2/backup_qa_stepslib.php');
  * @copyright 2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_qa_activity_task extends backup_activity_task {
+class backup_qa_activity_task extends backup_activity_task
+{
 
     /**
      * No specific settings for this activity
@@ -62,11 +63,11 @@ class backup_qa_activity_task extends backup_activity_task {
         $base = preg_quote($CFG->wwwroot, '/');
 
         // Link to the list of qas.
-        $search = '/('.$base.'\/mod\/qa\/index.php\?id\=)([0-9]+)/';
+        $search = '/(' . $base . '\/mod\/qa\/index.php\?id\=)([0-9]+)/';
         $content = preg_replace($search, '$@NEWMODULEINDEX*$2@$', $content);
 
         // Link to qa view by moduleid.
-        $search = '/('.$base.'\/mod\/qa\/view.php\?id\=)([0-9]+)/';
+        $search = '/(' . $base . '\/mod\/qa\/view.php\?id\=)([0-9]+)/';
         $content = preg_replace($search, '$@NEWMODULEVIEWBYID*$2@$', $content);
 
         return $content;

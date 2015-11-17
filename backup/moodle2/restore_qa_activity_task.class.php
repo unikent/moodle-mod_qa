@@ -37,7 +37,8 @@ require_once($CFG->dirroot . '/mod/qa/backup/moodle2/restore_qa_stepslib.php');
  * @copyright 2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qa_activity_task extends restore_activity_task {
+class restore_qa_activity_task extends restore_activity_task
+{
 
     /**
      * Define (add) particular settings this activity can have

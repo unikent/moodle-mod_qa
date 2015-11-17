@@ -33,7 +33,8 @@ defined('MOODLE_INTERNAL') || die;
  * @copyright 2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_qa_activity_structure_step extends backup_activity_structure_step {
+class backup_qa_activity_structure_step extends backup_activity_structure_step
+{
 
     /**
      * Defines the backup structure of the module

@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @return mixed true if the feature is supported, null if unknown
  */
 function qa_supports($feature) {
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_MOD_INTRO:
             return true;
         case FEATURE_SHOW_DESCRIPTION:
@@ -103,7 +103,7 @@ function qa_update_instance(stdClass $qa, mod_qa_mod_form $mform = null) {
 function qa_delete_instance($id) {
     global $DB;
 
-    if (! $qa = $DB->get_record('qa', array('id' => $id))) {
+    if (!$qa = $DB->get_record('qa', array('id' => $id))) {
         return false;
     }
 
@@ -178,7 +178,7 @@ function qa_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $userid check for a particular user's activity only, defaults to 0 (all users)
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  */
-function qa_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function qa_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid = 0, $groupid = 0) {
 }
 
 /**

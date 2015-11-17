@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 /**
  * Module instance settings form
@@ -33,13 +33,13 @@ require_once($CFG->dirroot.'/course/moodleform_mod.php');
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_qa_mod_form extends moodleform_mod {
+class mod_qa_mod_form extends moodleform_mod
+{
 
     /**
      * Defines forms elements
      */
     public function definition() {
-
         $mform = $this->_form;
 
         // Adding the "general" fieldset, where all the common settings are showed.
