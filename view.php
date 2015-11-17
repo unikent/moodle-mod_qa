@@ -15,10 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of qa
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * Prints a particular instance of qa.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>

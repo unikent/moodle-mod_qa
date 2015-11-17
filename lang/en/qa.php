@@ -16,10 +16,7 @@
 
 
 /**
- * English strings for qa
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * English strings for qa.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>

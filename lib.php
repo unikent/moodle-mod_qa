@@ -15,14 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of interface functions and constants for module qa
- *
- * All the core Moodle functions, neeeded to allow the module to work
- * integrated in Moodle should be placed here.
- *
- * All the qa specific functions, needed to implement all the module
- * logic, should go to locallib.php. This will help to save some memory when
- * Moodle is performing actions across all modules.
+ * Library of interface functions and constants for module qa.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
@@ -198,21 +191,6 @@ function qa_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid
  * @param bool $viewfullnames display users' full names
  */
 function qa_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
-}
-
-/**
- * Function to be run periodically according to the moodle cron
- *
- * This function searches for things that need to be done, such
- * as sending out mail, toggling flags etc ...
- *
- * Note that this has been deprecated in favour of scheduled task API.
- *
- * @return boolean
- */
-function qa_cron () {
-    // TODO - emails?
-    return true;
 }
 
 /**
