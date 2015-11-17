@@ -72,9 +72,14 @@ class qa
         global $DB;
 
         if (!isset($this->questions)) {
-            $this->questions = $DB->get_records('qa_questions', array(
+            $questions = $DB->get_records('qa_questions', array(
                 'qaid' => $this->data->id
             ));
+
+            $this->questions = array();
+            foreach ($questions as $question) {
+                $this->questions[$question->id] = question::from_db($question);
+            }
         }
 
         return $this->questions;

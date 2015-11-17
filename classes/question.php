@@ -88,7 +88,7 @@ class question
 
         if (!isset($this->votes)) {
             $this->votes = $DB->count_records('qa_votes', array(
-                'qaqid' => $this->data->id
+                'qaqid' => $this->id
             ));
         }
 
@@ -103,10 +103,19 @@ class question
 
         if (!isset($this->replies)) {
             $this->replies = $DB->get_records('qa_replies', array(
-                'qaqid' => $this->data->id
+                'qaqid' => $this->id
             ));
         }
 
         return count($this->replies);
+    }
+
+    /**
+     * Return a view link.
+     */
+    public function get_view_link() {
+        return new \moodle_url('/mod/qa/question.php', array(
+            'id' => $this->id
+        ));
     }
 }
