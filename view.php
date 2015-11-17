@@ -29,6 +29,7 @@ require_once(dirname(__FILE__) . '/lib.php');
 
 $id = required_param('id', PARAM_INT);
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'qa');
+$qa = $DB->get_record('qa', array('id' => $cm->instance));
 
 require_login($course, true, $cm);
 
@@ -48,13 +49,17 @@ $PAGE->set_heading(format_string($course->fullname));
 
 // Output starts here.
 echo $OUTPUT->header();
+echo $OUTPUT->heading($qa->name);
 
 // Conditions to show the intro can change to look for own settings or whatever.
 if ($qa->intro) {
     echo $OUTPUT->box(format_module_intro('qa', $qa, $cm->id), 'generalbox mod_introbox', 'qaintro');
 }
 
-echo $OUTPUT->heading('Todo!');
+// Output list of questions.
+$questions = $DB->get_records('qa_questions', array('qaid' => $qa->id));
+$output = $PAGE->get_renderer('mod_qa');
+echo $output->render_list($questions);
 
 // Finish the page.
 echo $OUTPUT->footer();
