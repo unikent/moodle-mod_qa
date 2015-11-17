@@ -57,7 +57,6 @@ class mod_qa_mod_form extends moodleform_mod {
         }
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-        $mform->addHelpButton('name', 'qaname', 'qa');
 
         // Adding the standard "intro" and "introformat" fields.
         if ($CFG->branch >= 29) {
@@ -65,16 +64,6 @@ class mod_qa_mod_form extends moodleform_mod {
         } else {
             $this->add_intro_editor();
         }
-
-        // Adding the rest of qa settings, spreading all them into this fieldset
-        // ... or adding more fieldsets ('header' elements) if needed for better logic.
-        $mform->addElement('static', 'label1', 'qasetting1', 'Your qa fields go here. Replace me!');
-
-        $mform->addElement('header', 'qafieldset', get_string('qafieldset', 'qa'));
-        $mform->addElement('static', 'label2', 'qasetting2', 'Your qa fields go here. Replace me!');
-
-        // Add standard grading elements.
-        $this->standard_grading_coursemodule_elements();
 
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();

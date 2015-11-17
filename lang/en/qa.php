@@ -32,9 +32,9 @@ $string['modulename'] = 'Q&A';
 $string['modulenameplural'] = 'Q&As';
 $string['modulename_help'] = 'The Q&A module allows protected and anonymous question and answer pages for students.';
 
-$string['qafieldset'] = 'Custom example fieldset';
-$string['qaname'] = 'Q&A name';
-$string['qaname_help'] = 'This is the content of the help tooltip associated with the qaname field. Markdown syntax is supported.';
 $string['qa'] = 'Q&A';
 $string['pluginadministration'] = 'Q&A administration';
 $string['pluginname'] = 'Q&A';
+
+$string['qaname'] = 'Q&A name';
+

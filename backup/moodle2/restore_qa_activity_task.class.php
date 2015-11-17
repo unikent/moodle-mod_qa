@@ -61,7 +61,9 @@ class restore_qa_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
 
-        $contents[] = new restore_decode_content('qa', array('intro'), 'qa');
+        $contents[] = new restore_decode_content('qa', array('intro'));
+        $contents[] = new restore_decode_content('qa_questions', array('description'));
+        $contents[] = new restore_decode_content('qa_replies', array('content'));
 
         return $contents;
     }

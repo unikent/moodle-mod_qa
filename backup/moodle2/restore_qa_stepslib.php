@@ -42,6 +42,9 @@ class restore_qa_activity_structure_step extends restore_activity_structure_step
 
         $paths = array();
         $paths[] = new restore_path_element('qa', '/activity/qa');
+        $paths[] = new restore_path_element('qa_question', '/activity/qa/questions/question');
+        $paths[] = new restore_path_element('qa_reply', '/activity/qa/questions/question/replies/reply');
+        $paths[] = new restore_path_element('qa_vote', '/activity/qa/questions/question/votes/vote');
 
         // Return the paths wrapped into standard activity structure.
         return $this->prepare_activity_structure($paths);
@@ -67,15 +70,85 @@ class restore_qa_activity_structure_step extends restore_activity_structure_step
             $data->timemodified = time();
         }
 
-        if ($data->grade < 0) {
-            // Scale found, get mapping.
-            $data->grade = -($this->get_mappingid('scale', abs($data->grade)));
-        }
-
         // Create the qa instance.
         $newitemid = $DB->insert_record('qa', $data);
         $this->apply_activity_instance($newitemid);
     }
+
+    /**
+     * Process the given restore path element data
+     *
+     * @param array $data parsed element data
+     */
+    protected function process_qa_question($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $data->qaid = $this->get_new_parentid('qa');
+        $data->userid = $this->get_mappingid('user', $data->userid);
+
+        if (empty($data->timecreated)) {
+            $data->timecreated = time();
+        }
+
+        if (empty($data->timemodified)) {
+            $data->timemodified = time();
+        }
+
+        $newitemid = $DB->insert_record('qa_questions', $data);
+        $this->set_mapping('qa_questions', $oldid, $newitemid);
+    }
+
+    /**
+     * Process the given restore path element data
+     *
+     * @param array $data parsed element data
+     */
+    protected function process_qa_reply($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $data->qaqid = $this->get_new_parentid('qa_questions');
+        $data->userid = $this->get_mappingid('user', $data->userid);
+
+        if (empty($data->timecreated)) {
+            $data->timecreated = time();
+        }
+
+        if (empty($data->timemodified)) {
+            $data->timemodified = time();
+        }
+
+        $newitemid = $DB->insert_record('qa_replies', $data);
+        $this->set_mapping('qa_replies', $oldid, $newitemid);
+    }
+
+    /**
+     * Process the given restore path element data
+     *
+     * @param array $data parsed element data
+     */
+    protected function process_qa_vote($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $oldid = $data->id;
+
+        $data->qaqid = $this->get_new_parentid('qa_questions');
+        $data->userid = $this->get_mappingid('user', $data->userid);
+
+        if (empty($data->timecreated)) {
+            $data->timecreated = time();
+        }
+
+        $newitemid = $DB->insert_record('qa_votes', $data);
+        $this->set_mapping('qa_votes', $oldid, $newitemid);
+    }
+
 
     /**
      * Post-execution actions
@@ -83,5 +156,7 @@ class restore_qa_activity_structure_step extends restore_activity_structure_step
     protected function after_execute() {
         // Add qa related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_qa', 'intro', null);
+        $this->add_related_files('mod_qa', 'description', null);
+        $this->add_related_files('mod_qa', 'content', null);
     }
 }

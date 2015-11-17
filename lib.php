@@ -32,13 +32,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Example constant, you probably want to remove this :-)
- */
-define('NEWMODULE_ULTIMATE_ANSWER', 42);
-
-/* Moodle core API */
-
-/**
  * Returns the information on whether the module supports a feature
  *
  * See {@link plugin_supports()} for more info.
@@ -77,6 +70,7 @@ function qa_add_instance(stdClass $qa, mod_qa_mod_form $mform = null) {
     global $DB;
 
     $qa->timecreated = time();
+    $qa->timemodified = time();
     $qa->id = $DB->insert_record('qa', $qa);
 
     return $qa->id;
@@ -231,68 +225,4 @@ function qa_cron () {
  */
 function qa_get_extra_capabilities() {
     return array();
-}
-
-/* File API */
-
-/**
- * Returns the lists of all browsable file areas within the given module context
- *
- * The file area 'intro' for the activity introduction field is added automatically
- * by {@link file_browser::get_file_info_context_module()}
- *
- * @param stdClass $course
- * @param stdClass $cm
- * @param stdClass $context
- * @return array of [(string)filearea] => (string)description
- */
-function qa_get_file_areas($course, $cm, $context) {
-    return array();
-}
-
-/**
- * File browsing support for qa file areas
- *
- * @package mod_qa
- * @category files
- *
- * @param file_browser $browser
- * @param array $areas
- * @param stdClass $course
- * @param stdClass $cm
- * @param stdClass $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
- * @return file_info instance or null if not found
- */
-function qa_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
-    return null;
-}
-
-/**
- * Serves the files from the qa file areas
- *
- * @package mod_qa
- * @category files
- *
- * @param stdClass $course the course object
- * @param stdClass $cm the course module object
- * @param stdClass $context the qa's context
- * @param string $filearea the name of the file area
- * @param array $args extra arguments (itemid, path)
- * @param bool $forcedownload whether or not force download
- * @param array $options additional options affecting the file serving
- */
-function qa_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
-    global $DB, $CFG;
-
-    if ($context->contextlevel != CONTEXT_MODULE) {
-        send_file_not_found();
-    }
-
-    require_login($course, true, $cm);
-
-    send_file_not_found();
 }
