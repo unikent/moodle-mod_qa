@@ -33,7 +33,7 @@ class mod_qa_renderer extends plugin_renderer_base
         $ret = '<div class="list-group">';
 
         foreach ($items as $item) {
-            $ret .= "<a href=\"{$item->href}\" class=\"list-group-item\">{$item->name}</a>";
+            $ret .= "<a href=\"{$item->href}\" class=\"list-group-item\">{$item->name} <span class=\"badge\">{$item->votes}</span></a>";
         }
 
         $ret .= '</div>';

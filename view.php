@@ -38,7 +38,7 @@ $event = \mod_qa\event\course_module_viewed::create(array(
     'context' => $PAGE->context,
 ));
 $event->add_record_snapshot('course', $PAGE->course);
-$event->add_record_snapshot($PAGE->cm->modname, $qa);
+$event->add_record_snapshot('qa', $qa);
 $event->trigger();
 
 // Print the page header.
@@ -58,8 +58,16 @@ if ($qa->intro) {
 
 // Output list of questions.
 $questions = $DB->get_records('qa_questions', array('qaid' => $qa->id));
-$output = $PAGE->get_renderer('mod_qa');
-echo $output->render_list($questions);
+$renderer = $PAGE->get_renderer('mod_qa');
+if (!empty($questions)) {
+    echo $renderer->render_list($questions);
+} else {
+    echo \html_writer::tag('p', get_string('noquestions', 'mod_qa'));
+}
+
+// New question link.
+$url = new \moodle_url('/mod/qa/ask.php', array('qaid' => $qa->id));
+echo \html_writer::tag('p', \html_writer::link($url, get_string('askquestion', 'mod_qa')));
 
 // Finish the page.
 echo $OUTPUT->footer();

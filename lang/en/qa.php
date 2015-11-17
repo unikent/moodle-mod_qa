@@ -35,3 +35,6 @@ $string['pluginname'] = 'Q&A';
 
 $string['qaname'] = 'Q&A name';
 
+// Todo - decide on appropriate strings.
+$string['noquestions'] = 'There are no questions here yet!';
+$string['askquestion'] = 'Ask a question.';
