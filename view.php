@@ -59,6 +59,7 @@ if ($qa->intro) {
 $renderer = $PAGE->get_renderer('mod_qa');
 
 // Output list of questions.
+// TODO - order by votes.
 $qaobj = \mod_qa\qa::from_db($qa);
 $questions = $qaobj->get_questions();
 if (!empty($questions)) {

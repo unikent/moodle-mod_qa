@@ -33,7 +33,13 @@ class mod_qa_renderer extends plugin_renderer_base
         $ret = '<div class="list-group">';
 
         foreach ($items as $item) {
-            $ret .= "<a href=\"{$item->get_view_link()}\" class=\"list-group-item\">{$item->title} <span class=\"badge\">{$item->get_vote_count()}</span></a>";
+            $votes = $item->get_vote_count();
+            $contents = "{$item->title} <span class=\"badge\">{$votes}";
+            $contents = \html_writer::tag('h4', $contents, array('class' => 'list-group-item-heading'));
+            $contents .= \html_writer::tag('p', 'Posted by ' . $item->get_user(), array('class' => 'list-group-item-text'));
+
+            $link = $item->get_view_link();
+            $ret .= "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
         }
 
         $ret .= '</div>';

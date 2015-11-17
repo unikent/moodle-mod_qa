@@ -118,4 +118,28 @@ class question
             'id' => $this->id
         ));
     }
+
+    /**
+     * Is this an anonymously posted question?
+     */
+    public function is_anonymous() {
+        return $this->anonymous > 0;
+    }
+
+    /**
+     * Returns a pretty print of the user's name.
+     */
+    public function get_user() {
+        global $DB;
+
+        if ($this->anonymous > 0) {
+            return 'Anonymous';
+        }
+
+        $user = $DB->get_record('user', array(
+            'id' => $this->userid
+        ));
+
+        return fullname($user);
+    }
 }
