@@ -46,7 +46,7 @@ class mod_qa_renderer extends plugin_renderer_base
      */
     public function render_question_item($item) {
         // TODO - display reply count too.
-        $title = $item->title;
+        $title = s($item->title);
         $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
 
         $contents = \html_writer::tag('h4', "{$title} {$votes}", array('class' => 'list-group-item-heading'));
@@ -74,9 +74,23 @@ class mod_qa_renderer extends plugin_renderer_base
     }
 
     /**
+     * Render question replies.
+     */
+    public function render_question_replies($items) {
+        $contents = '';
+        foreach ($items as $item) {
+            $contents .= $this->render_reply($item);
+        }
+
+        return "<div class=\"list-group\">{$contents}</div>";
+    }
+
+    /**
      * Render a reply.
      */
-    public function render_reply($reply) {
-
+    public function render_reply($item) {
+        $link = $item->get_view_link();
+        $contents = \html_writer::tag('p', format_text($item->contents, \FORMAT_HTML), array('class' => 'list-group-item-text'));
+        return "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
     }
 }

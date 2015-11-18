@@ -46,6 +46,10 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading($question->title);
 
 echo $renderer->render_question_view($question);
+echo $renderer->render_question_replies($question->get_replies());
+
+$url = new \moodle_url('/mod/qa/reply.php', array('qaqid' => $question->id));
+echo \html_writer::tag('p', \html_writer::link($url, get_string('questionreply', 'mod_qa')));
 
 // Finish the page.
 echo $OUTPUT->footer();
