@@ -37,7 +37,8 @@ $string['qaname'] = 'Q&A name';
 
 $string['qtitle'] = 'Title';
 $string['qdesc'] = 'Description';
-$string['qanon'] = 'Post anonymously?';
+$string['qanon'] = 'Post anonymously';
+$string['qrdesc'] = 'Contents';
 
 $string['qa:addinstance'] = 'Add a new QA activity';
 $string['qa:view'] = 'View a QA activity';
@@ -51,8 +52,12 @@ $string['askquestion'] = 'Ask a question.';
 $string['questionreply'] = 'Reply to this question.';
 $string['replyto'] = 'Reply: {$a}';
 
-// Todo - decide on appropriate strings.
-$string['noquestions'] = 'There are no questions here yet!';
 $string['event:questionposted'] = 'Question posted';
-$string['event:questionposted_desc_anon'] = 'An anonymous user posted a question with an ID of \'{$a}\'.';
-$string['event:questionposted_desc_user'] = 'The user with id \'{$a->userid}\' posted a question with an ID of \'{$a->oid}\'.';
+$string['event:questionposted_desc_anon'] = 'An anonymous user posted a question \'{$a}\'.';
+$string['event:questionposted_desc_user'] = 'The user with id \'{$a->userid}\' posted a question \'{$a->title}\'.';
+
+$string['event:replyposted'] = 'Reply posted';
+$string['event:replyposted_desc_anon'] = 'An anonymous user posted a reply to the question \'{$a}\'.';
+$string['event:replyposted_desc_user'] = 'The user with id \'{$a->userid}\' posted a reply to the question \'{$a->title}\'.';
+
+$string['noquestions'] = 'There are no questions here yet!';

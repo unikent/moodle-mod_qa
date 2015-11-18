@@ -53,6 +53,13 @@ trait user
     }
 
     /**
+     * Is this anonymously posted?
+     */
+    public function is_anonymous() {
+        return isset($this->anonymous) && $this->anonymous > 0;
+    }
+
+    /**
      * Returns a pretty print of the user's name.
      */
     public function get_username() {

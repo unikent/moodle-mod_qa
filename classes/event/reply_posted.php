@@ -27,13 +27,13 @@ namespace mod_qa\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The mod_qa posted event.
+ * The mod_qa reply posted event.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class question_posted extends \core\event\base
+class reply_posted extends \core\event\base
 {
     /**
      * Init method.
@@ -43,7 +43,7 @@ class question_posted extends \core\event\base
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'qa_questions';
+        $this->data['objecttable'] = 'qa_replies';
     }
 
     /**
@@ -53,13 +53,13 @@ class question_posted extends \core\event\base
      */
     public function get_description() {
         if ($this->userid > 0) {
-            return get_string('event:questionposted_desc_user', 'mod_qa', (object)array(
-                'title' => $this->other['title'],
+            return get_string('event:replyposted_desc_user', 'mod_qa', (object)array(
+                'title' => $this->other['questiontitle'],
                 'userid' => $this->userid
             ));
         }
 
-        return get_string('event:questionposted_desc_anon', 'mod_qa', $this->other['title']);
+        return get_string('event:replyposted_desc_anon', 'mod_qa', $this->other['questiontitle']);
     }
 
     /**
@@ -68,7 +68,7 @@ class question_posted extends \core\event\base
      * @return string
      */
     public static function get_name() {
-        return get_string('event:questionposted', 'mod_qa');
+        return get_string('event:replyposted', 'mod_qa');
     }
 
     /**
@@ -77,7 +77,7 @@ class question_posted extends \core\event\base
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/mod/qa/question.php?id=' . $this->objectid);
+        return new \moodle_url('/mod/qa/question.php?id=' . $this->other['questionid']);
     }
 
     /**
@@ -89,8 +89,12 @@ class question_posted extends \core\event\base
     protected function validate_data() {
         parent::validate_data();
 
-        if (!isset($this->other['title'])) {
-            throw new \coding_exception('The \'title\' value must be set in the object.');
+        if (!isset($this->other['questionid'])) {
+            throw new \coding_exception('The \'questionid\' value must be set in the object.');
+        }
+
+        if (!isset($this->other['questiontitle'])) {
+            throw new \coding_exception('The \'questiontitle\' value must be set in the object.');
         }
     }
 }

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the view event.
+ * Defines the QA forms.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
@@ -30,7 +30,7 @@ global $CFG;
 require_once($CFG->libdir.'/formslib.php');
 
 /**
- * The mod_qa posted event.
+ * The mod_qa question post form.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
@@ -67,6 +67,8 @@ class post_question extends \moodleform
         if ($this->qa->can_post_anonymously()) {
             $mform->addElement('checkbox', 'anon', get_string('qanon', 'qa'));
         }
+
+        $this->set_data(array('qaid' => $this->qa->id));
 
         $this->add_action_buttons();
     }

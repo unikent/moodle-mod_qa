@@ -15,75 +15,55 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines a Q&A activity.
+ * Defines the QA forms.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_qa;
+namespace mod_qa\forms;
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
+require_once($CFG->libdir.'/formslib.php');
+
 /**
- * Abstracts us from the DB a little.
+ * The mod_qa question reply form.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class reply
+class post_reply extends \moodleform
 {
-    use traits\protecteddata;
-    use traits\user;
-
     private $question;
 
-    /**
-     * Private constructor.
-     */
-    private function __construct($data) {
-        $this->data = $data;
+    public function __construct($question, $action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true) {
+        $this->question = $question;
+
+        parent::__construct($action, $customdata, $method, $target, $attributes, $editable);
     }
 
     /**
-     * Public instancer.
+     * Form definition.
      */
-    public static function from_db($data) {
-        return new static($data);
-    }
+    protected function definition() {
+        $mform = $this->_form;
 
-    /**
-     * Returns a QA question object from an ID.
-     */
-    public static function from_id($id) {
-        global $DB;
+        $mform->addElement('hidden', 'qaqid');
+        $mform->setType('qaqid', PARAM_INT);
 
-        $data = $DB->get_record('qa_replies', array(
-            'id' => $id
-        ), '*', \MUST_EXIST);
+        $mform->addElement('textarea', 'contents', get_string('qrdesc', 'qa'));
+        $mform->setType('contents', PARAM_TEXT);
 
-        return new static($data);
-    }
-
-    /**
-     * Return a view link.
-     */
-    public function get_view_url() {
-        return new \moodle_url('/mod/qa/question.php', array(
-            'id' => $this->qaqid
-        ));
-    }
-
-    /**
-     * Returns the question.
-     */
-    public function get_question() {
-        if (!isset($this->question)) {
-            $this->question = question::from_id($this->qaqid);
+        if ($this->question->get_qa()->can_post_anonymously()) {
+            $mform->addElement('checkbox', 'anon', get_string('qanon', 'qa'));
         }
 
-        return $this->question;
+        $this->set_data(array('qaqid' => $this->question->id));
+
+        $this->add_action_buttons();
     }
 }

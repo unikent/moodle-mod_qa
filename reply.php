@@ -44,10 +44,27 @@ $PAGE->navbar->add($title);
 $PAGE->set_title(format_string($title));
 $PAGE->set_heading(format_string($course->fullname));
 
+// Form handling.
+$form = new \mod_qa\forms\post_reply($question);
+
+if ($form->is_cancelled()) {
+    redirect(new \moodle_url('/mod/qa/question.php', array(
+        'id' => $question->id
+    )));
+}
+
+if ($data = $form->get_data()) {
+    $question->post_reply($data->contents, isset($data->anon) ? $data->anon : 0);
+    redirect(new \moodle_url('/mod/qa/question.php', array(
+        'id' => $question->id
+    )));
+}
+
 // Output starts here.
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
+$form->display();
 
 // Finish the page.
 echo $OUTPUT->footer();

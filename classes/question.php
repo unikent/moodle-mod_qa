@@ -132,13 +132,6 @@ class question
     }
 
     /**
-     * Is this an anonymously posted question?
-     */
-    public function is_anonymous() {
-        return $this->anonymous > 0;
-    }
-
-    /**
      * Can the current user view this question?
      */
     public function can_view() {
@@ -164,5 +157,37 @@ class question
 
         $qa = $this->get_qa();
         return $qa->has_global_reply() || has_capability('mod/qa:globalreply', $PAGE->get_context());
+    }
+
+    /**
+     * Post a new reply.
+     */
+    public function post_reply($contents, $anonymous = 0) {
+        global $DB, $USER, $PAGE;
+
+        $reply = new \stdClass();
+        $reply->qaqid = $this->id;
+        $reply->userid = $USER->id;
+        $reply->anonymous = $anonymous;
+        $reply->content = $contents;
+        $reply->timecreated = time();
+        $reply->timemodified = time();
+
+        $id = $DB->insert_record('qa_replies', $reply);
+        $reply->id = $id;
+
+        $event = \mod_qa\event\reply_posted::create(array(
+            'objectid' => $reply->id,
+            'context' => $PAGE->context,
+            'userid' => $anonymous ? 0 : $USER->id,
+            'other' => array(
+                'questionid' => $this->id,
+                'questiontitle' => $this->title
+            )
+        ));
+        $event->add_record_snapshot('qa_replies', $reply);
+        $event->trigger();
+
+        return reply::from_db($reply);
     }
 }

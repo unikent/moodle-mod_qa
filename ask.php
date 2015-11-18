@@ -43,7 +43,6 @@ $PAGE->set_heading(format_string($course->fullname));
 
 // Form handling.
 $form = new \mod_qa\forms\post_question($qa);
-$form->set_data(array('qaid' => $qaid));
 
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/mod/qa/view.php', array(
@@ -52,8 +51,7 @@ if ($form->is_cancelled()) {
 }
 
 if ($data = $form->get_data()) {
-    $qaobj = \mod_qa\qa::from_db($qa);
-    $question = $qaobj->post_question($data->name, $data->desc, isset($data->anon) ? $data->anon : 0);
+    $question = $qa->post_question($data->name, $data->desc, isset($data->anon) ? $data->anon : 0);
     redirect(new \moodle_url('/mod/qa/question.php', array(
         'id' => $question->id
     )));

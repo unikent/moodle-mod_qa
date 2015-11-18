@@ -129,7 +129,10 @@ class qa
         $event = \mod_qa\event\question_posted::create(array(
             'objectid' => $question->id,
             'context' => $PAGE->context,
-            'userid' => $anonymous ? 0 : $USER->id
+            'userid' => $anonymous ? 0 : $USER->id,
+            'other' => array(
+                'title' => $question->title
+            )
         ));
         $event->add_record_snapshot('qa_questions', $question);
         $event->trigger();
