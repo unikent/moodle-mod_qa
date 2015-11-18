@@ -15,14 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library of interface functions and constants for module qa
- *
- * All the core Moodle functions, neeeded to allow the module to work
- * integrated in Moodle should be placed here.
- *
- * All the qa specific functions, needed to implement all the module
- * logic, should go to locallib.php. This will help to save some memory when
- * Moodle is performing actions across all modules.
+ * Library of interface functions and constants for module qa.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
@@ -30,13 +23,6 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
-/**
- * Example constant, you probably want to remove this :-)
- */
-define('NEWMODULE_ULTIMATE_ANSWER', 42);
-
-/* Moodle core API */
 
 /**
  * Returns the information on whether the module supports a feature
@@ -47,7 +33,7 @@ define('NEWMODULE_ULTIMATE_ANSWER', 42);
  * @return mixed true if the feature is supported, null if unknown
  */
 function qa_supports($feature) {
-    switch($feature) {
+    switch ($feature) {
         case FEATURE_MOD_INTRO:
             return true;
         case FEATURE_SHOW_DESCRIPTION:
@@ -77,6 +63,7 @@ function qa_add_instance(stdClass $qa, mod_qa_mod_form $mform = null) {
     global $DB;
 
     $qa->timecreated = time();
+    $qa->timemodified = time();
     $qa->id = $DB->insert_record('qa', $qa);
 
     return $qa->id;
@@ -116,7 +103,7 @@ function qa_update_instance(stdClass $qa, mod_qa_mod_form $mform = null) {
 function qa_delete_instance($id) {
     global $DB;
 
-    if (! $qa = $DB->get_record('qa', array('id' => $id))) {
+    if (!$qa = $DB->get_record('qa', array('id' => $id))) {
         return false;
     }
 
@@ -191,7 +178,7 @@ function qa_print_recent_activity($course, $viewfullnames, $timestart) {
  * @param int $userid check for a particular user's activity only, defaults to 0 (all users)
  * @param int $groupid check for a particular group's activity only, defaults to 0 (all groups)
  */
-function qa_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid=0, $groupid=0) {
+function qa_get_recent_mod_activity(&$activities, &$index, $timestart, $courseid, $cmid, $userid = 0, $groupid = 0) {
 }
 
 /**
@@ -207,21 +194,6 @@ function qa_print_recent_mod_activity($activity, $courseid, $detail, $modnames, 
 }
 
 /**
- * Function to be run periodically according to the moodle cron
- *
- * This function searches for things that need to be done, such
- * as sending out mail, toggling flags etc ...
- *
- * Note that this has been deprecated in favour of scheduled task API.
- *
- * @return boolean
- */
-function qa_cron () {
-    // TODO - emails?
-    return true;
-}
-
-/**
  * Returns all other caps used in the module
  *
  * For example, this could be array('moodle/site:accessallgroups') if the
@@ -231,68 +203,4 @@ function qa_cron () {
  */
 function qa_get_extra_capabilities() {
     return array();
-}
-
-/* File API */
-
-/**
- * Returns the lists of all browsable file areas within the given module context
- *
- * The file area 'intro' for the activity introduction field is added automatically
- * by {@link file_browser::get_file_info_context_module()}
- *
- * @param stdClass $course
- * @param stdClass $cm
- * @param stdClass $context
- * @return array of [(string)filearea] => (string)description
- */
-function qa_get_file_areas($course, $cm, $context) {
-    return array();
-}
-
-/**
- * File browsing support for qa file areas
- *
- * @package mod_qa
- * @category files
- *
- * @param file_browser $browser
- * @param array $areas
- * @param stdClass $course
- * @param stdClass $cm
- * @param stdClass $context
- * @param string $filearea
- * @param int $itemid
- * @param string $filepath
- * @param string $filename
- * @return file_info instance or null if not found
- */
-function qa_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
-    return null;
-}
-
-/**
- * Serves the files from the qa file areas
- *
- * @package mod_qa
- * @category files
- *
- * @param stdClass $course the course object
- * @param stdClass $cm the course module object
- * @param stdClass $context the qa's context
- * @param string $filearea the name of the file area
- * @param array $args extra arguments (itemid, path)
- * @param bool $forcedownload whether or not force download
- * @param array $options additional options affecting the file serving
- */
-function qa_pluginfile($course, $cm, $context, $filearea, array $args, $forcedownload, array $options=array()) {
-    global $DB, $CFG;
-
-    if ($context->contextlevel != CONTEXT_MODULE) {
-        send_file_not_found();
-    }
-
-    require_login($course, true, $cm);
-
-    send_file_not_found();
 }

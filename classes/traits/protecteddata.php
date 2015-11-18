@@ -15,14 +15,39 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Internal library of functions for module qa
- *
- * All the qa specific functions, needed to implement the module
- * logic, should go here. Never include this file from your lib.php!
+ * Defines a Q&A activity.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace mod_qa\traits;
+
 defined('MOODLE_INTERNAL') || die();
+
+/**
+ * Data trait.
+ *
+ * @package    mod_qa
+ * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+trait protecteddata
+{
+    protected $data;
+
+    /**
+     * Return data.
+     */
+    public function __get($name) {
+        return $this->data->$name;
+    }
+
+    /**
+     * Return data.
+     */
+    public function __isset($name) {
+        return isset($this->data->$name);
+    }
+}

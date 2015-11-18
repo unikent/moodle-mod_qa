@@ -37,7 +37,8 @@ require_once($CFG->dirroot . '/mod/qa/backup/moodle2/restore_qa_stepslib.php');
  * @copyright 2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qa_activity_task extends restore_activity_task {
+class restore_qa_activity_task extends restore_activity_task
+{
 
     /**
      * Define (add) particular settings this activity can have
@@ -61,7 +62,9 @@ class restore_qa_activity_task extends restore_activity_task {
     static public function define_decode_contents() {
         $contents = array();
 
-        $contents[] = new restore_decode_content('qa', array('intro'), 'qa');
+        $contents[] = new restore_decode_content('qa', array('intro'));
+        $contents[] = new restore_decode_content('qa_questions', array('description'));
+        $contents[] = new restore_decode_content('qa_replies', array('content'));
 
         return $contents;
     }

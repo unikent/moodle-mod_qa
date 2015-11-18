@@ -15,18 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This is a one-line short description of the file
- *
- * You can have a rather longer description of the file as well,
- * if you like, and it can span multiple lines.
+ * The index page for mod_qa.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
 $id = required_param('id', PARAM_INT); // Course.
 
@@ -51,7 +48,7 @@ $PAGE->set_pagelayout('incourse');
 echo $OUTPUT->header();
 echo $OUTPUT->heading($strname);
 
-if (! $qas = get_all_instances_in_course('qa', $course)) {
+if (!$qas = get_all_instances_in_course('qa', $course)) {
     notice(get_string('noqas', 'qa'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }
 
@@ -61,12 +58,12 @@ $table = new html_table();
 $table->attributes['class'] = 'generaltable mod_index';
 
 if ($usesections) {
-    $strsectionname = get_string('sectionname', 'format_'.$course->format);
-    $table->head  = array ($strsectionname, $strname);
-    $table->align = array ('center', 'left');
+    $strsectionname = get_string('sectionname', 'format_' . $course->format);
+    $table->head = array($strsectionname, $strname);
+    $table->align = array('center', 'left');
 } else {
-    $table->head  = array ($strname);
-    $table->align = array ('left');
+    $table->head = array($strname);
+    $table->align = array('left');
 }
 
 $modinfo = get_fast_modinfo($course);
@@ -88,7 +85,7 @@ foreach ($modinfo->instances['qa'] as $cm) {
     $class = $cm->visible ? null : array('class' => 'dimmed');
 
     $row[] = html_writer::link(new moodle_url('view.php', array('id' => $cm->id)),
-                $cm->get_formatted_name(), $class);
+        $cm->get_formatted_name(), $class);
     $table->data[] = $row;
 }
 

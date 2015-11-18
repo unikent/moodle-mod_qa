@@ -15,57 +15,61 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The main qa configuration form.
+ * Defines the QA forms.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace mod_qa\forms;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/course/moodleform_mod.php');
+global $CFG;
+require_once($CFG->libdir.'/formslib.php');
 
 /**
- * Module instance settings form
+ * The mod_qa question post form.
  *
  * @package    mod_qa
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_qa_mod_form extends moodleform_mod
+class post_question extends \moodleform
 {
+    private $qa;
+
+    public function __construct($qa, $action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true) {
+        $this->qa = $qa;
+
+        parent::__construct($action, $customdata, $method, $target, $attributes, $editable);
+    }
 
     /**
-     * Defines forms elements
+     * Form definition.
      */
-    public function definition() {
+    protected function definition() {
         $mform = $this->_form;
 
-        // Adding the "general" fieldset, where all the common settings are showed.
-        $mform->addElement('header', 'general', get_string('general', 'form'));
+        $mform->addElement('hidden', 'qaid');
+        $mform->setType('qaid', PARAM_INT);
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('qaname', 'qa'), array('size' => '64'));
-        if (!empty($CFG->formatstringstriptags)) {
-            $mform->setType('name', PARAM_TEXT);
-        } else {
-            $mform->setType('name', PARAM_CLEAN);
-        }
+        $mform->addElement('text', 'name', get_string('qtitle', 'qa'), array('size' => '64'));
+        $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        // Adding the standard "intro" and "introformat" fields.
-        if ($CFG->branch >= 29) {
-            $this->standard_intro_elements();
-        } else {
-            $this->add_intro_editor();
+        $mform->addElement('textarea', 'desc', get_string('qdesc', 'qa'));
+        $mform->setType('desc', PARAM_TEXT);
+
+        if ($this->qa->can_post_anonymously()) {
+            $mform->addElement('checkbox', 'anon', get_string('qanon', 'qa'));
         }
 
-        // Add standard elements, common to all modules.
-        $this->standard_coursemodule_elements();
+        $this->set_data(array('qaid' => $this->qa->id));
 
-        // Add standard buttons, common to all modules.
         $this->add_action_buttons();
     }
 }
