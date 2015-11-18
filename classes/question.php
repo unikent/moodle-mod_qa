@@ -90,9 +90,14 @@ class question
         global $DB;
 
         if (!isset($this->replies)) {
-            $this->replies = $DB->get_records('qa_replies', array(
+            $replies = $DB->get_records('qa_replies', array(
                 'qaqid' => $this->id
             ));
+
+            $this->replies = array();
+            foreach ($replies as $reply) {
+                $this->replies[$reply->id] = reply::from_db($reply);
+            }
         }
 
         return $this->replies;
