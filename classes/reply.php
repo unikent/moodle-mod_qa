@@ -33,13 +33,12 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class question
+class reply
 {
     use traits\protecteddata;
     use traits\user;
 
-    private $votes;
-    private $replies;
+    private $question;
 
     /**
      * Private constructor.
@@ -61,7 +60,7 @@ class question
     public static function from_id($id) {
         global $DB;
 
-        $data = $DB->get_record('qa_question', array(
+        $data = $DB->get_record('qa_replies', array(
             'id' => $id
         ), '*', \MUST_EXIST);
 
@@ -69,55 +68,30 @@ class question
     }
 
     /**
-     * Returns a vote count.
-     */
-    public function count_votes() {
-        global $DB;
-
-        if (!isset($this->votes)) {
-            $this->votes = $DB->count_records('qa_votes', array(
-                'qaqid' => $this->id
-            ));
-        }
-
-        return $this->votes;
-    }
-
-    /**
-     * Returns a reply count.
-     */
-    public function get_replies() {
-        global $DB;
-
-        if (!isset($this->replies)) {
-            $this->replies = $DB->get_records('qa_replies', array(
-                'qaqid' => $this->id
-            ));
-        }
-
-        return $this->replies;
-    }
-
-    /**
-     * Returns a reply count.
-     */
-    public function count_replies() {
-        return count($this->get_replies());
-    }
-
-    /**
      * Return a view link.
      */
     public function get_view_link() {
         return new \moodle_url('/mod/qa/question.php', array(
-            'id' => $this->id
+            'id' => $this->qaqid
         ));
+    }
+
+    /**
+     * Returns the question.
+     */
+    public function get_question() {
+        if (!isset($this->question)) {
+            $this->question = question::from_id($this->qaqid);
+        }
+
+        return $this->question;
     }
 
     /**
      * Is this an anonymously posted question?
      */
     public function is_anonymous() {
-        return $this->anonymous > 0;
+        $question = $this->get_question();
+        return $this->userid == $question->userid;
     }
 }

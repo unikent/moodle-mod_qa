@@ -50,7 +50,7 @@ class mod_qa_renderer extends plugin_renderer_base
         $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
 
         $contents = \html_writer::tag('h4', "{$title} {$votes}", array('class' => 'list-group-item-heading'));
-        $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $item->get_user()), array('class' => 'list-group-item-text'));
+        $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-text'));
 
         $link = $item->get_view_link();
         return "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
@@ -68,8 +68,15 @@ class mod_qa_renderer extends plugin_renderer_base
             $contents .= $OUTPUT->box(format_text($question->description, \FORMAT_HTML), 'generalbox', 'qapost');
         }
 
-        $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $question->get_user()), array('class' => 'author'));
+        $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $question->get_username()), array('class' => 'author'));
 
-        return $contents;
+        return $contents . \html_writer::empty_tag('hr');
+    }
+
+    /**
+     * Render a reply.
+     */
+    public function render_reply($reply) {
+
     }
 }
