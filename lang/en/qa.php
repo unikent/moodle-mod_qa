@@ -43,6 +43,8 @@ $string['qa:addinstance'] = 'Add a new QA activity';
 $string['qa:view'] = 'View a QA activity';
 $string['qa:submit'] = 'Submit questions to a QA activity';
 
+$string['postedby'] = 'Posted by {$a}';
+
 // Todo - decide on appropriate strings.
 $string['noquestions'] = 'There are no questions here yet!';
 $string['askquestion'] = 'Ask a question.';

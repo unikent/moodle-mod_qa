@@ -98,7 +98,7 @@ class question
     /**
      * Returns a reply count.
      */
-    public function count_replies() {
+    public function get_replies() {
         global $DB;
 
         if (!isset($this->replies)) {
@@ -107,7 +107,14 @@ class question
             ));
         }
 
-        return count($this->replies);
+        return $this->replies;
+    }
+
+    /**
+     * Returns a reply count.
+     */
+    public function count_replies() {
+        return count($this->get_replies());
     }
 
     /**

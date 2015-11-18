@@ -28,7 +28,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 
 $qid = required_param('id', PARAM_INT);
-$question = $DB->get_record('qa_questions', array('id' => $qid));
+$question = \mod_qa\question::from_db($DB->get_record('qa_questions', array('id' => $qid)));
 list($course, $cm) = get_course_and_cm_from_instance($question->qaid, 'qa');
 
 require_login($course, true, $cm);
@@ -37,15 +37,15 @@ $PAGE->set_url('/mod/qa/question.php', array('id' => $qid));
 $PAGE->navbar->add($question->title, $PAGE->url);
 $PAGE->set_title(format_string($question->title));
 $PAGE->set_heading(format_string($course->fullname));
+$PAGE->requires->css('/mod/qa/styles.css');
+
+$renderer = $PAGE->get_renderer('mod_qa');
 
 // Output starts here.
 echo $OUTPUT->header();
 echo $OUTPUT->heading($question->title);
 
-// Output the description too.
-if (!empty($question->description)) {
-    echo $OUTPUT->box(format_text($question->description, \FORMAT_HTML), 'generalbox', 'qapost');
-}
+echo $renderer->render_question_view($question);
 
 // Finish the page.
 echo $OUTPUT->footer();
