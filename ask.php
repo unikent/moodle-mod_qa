@@ -32,27 +32,36 @@ list($course, $cm) = get_course_and_cm_from_instance($qaid, 'qa');
 $qa = $DB->get_record('qa', array('id' => $qaid));
 
 require_login($course, true, $cm);
+require_capability('mod/qa:submit', $PAGE->context);
 
 // Print the page header.
 
 $PAGE->set_url('/mod/qa/ask.php', array('qaid' => $qaid));
+$PAGE->navbar->add(get_string('askquestion', 'mod_qa'));
 $PAGE->set_title(format_string($qa->name));
 $PAGE->set_heading(format_string($course->fullname));
 
-// Output starts here.
-echo $OUTPUT->header();
-echo $OUTPUT->heading($qa->name);
-
+// Form handling.
 $form = new \mod_qa\forms\post_question();
 $form->set_data(array('qaid' => $qaid));
+
+if ($form->is_cancelled()) {
+    redirect(new \moodle_url('/mod/qa/view.php', array(
+        'id' => $cm->id
+    )));
+}
+
 if ($data = $form->get_data()) {
-    // TODO - capability checks.
     $qaobj = \mod_qa\qa::from_db($qa);
     $question = $qaobj->post_question($data->name, $data->desc, isset($data->anon) ? $data->anon : 0);
     redirect(new \moodle_url('/mod/qa/question.php', array(
         'id' => $question->id
     )));
 }
+
+// Output starts here.
+echo $OUTPUT->header();
+echo $OUTPUT->heading($qa->name);
 
 $form->display();
 
