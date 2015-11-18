@@ -50,7 +50,9 @@ class backup_qa_activity_structure_step extends backup_activity_structure_step
         $qa = new backup_nested_element('qa', array('id'), array(
             'name',
             'intro',
-            'introformat'
+            'introformat',
+            'allowanonymous',
+            'allowview'
         ));
 
         $questions = new backup_nested_element('questions');
