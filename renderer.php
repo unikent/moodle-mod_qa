@@ -90,7 +90,8 @@ class mod_qa_renderer extends plugin_renderer_base
      */
     public function render_reply($item) {
         $link = $item->get_view_link();
-        $contents = \html_writer::tag('p', format_text($item->contents, \FORMAT_HTML), array('class' => 'list-group-item-text'));
-        return "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
+        $contents = \html_writer::tag('h4', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-heading'));
+        $contents .= \html_writer::tag('p', format_text($item->content, \FORMAT_HTML), array('class' => 'list-group-item-text'));
+        return "<div class=\"list-group-item\">{$contents}</div>";
     }
 }
