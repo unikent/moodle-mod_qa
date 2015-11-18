@@ -29,21 +29,30 @@ defined('MOODLE_INTERNAL') || die();
  */
 class mod_qa_renderer extends plugin_renderer_base
 {
+    /**
+     * Render a list of items.
+     */
     public function render_list($items) {
-        $ret = '<div class="list-group">';
-
+        $contents = '';
         foreach ($items as $item) {
-            $votes = $item->get_vote_count();
-            $contents = "{$item->title} <span class=\"badge\">{$votes}";
-            $contents = \html_writer::tag('h4', $contents, array('class' => 'list-group-item-heading'));
-            $contents .= \html_writer::tag('p', 'Posted by ' . $item->get_user(), array('class' => 'list-group-item-text'));
-
-            $link = $item->get_view_link();
-            $ret .= "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
+            $contents .= $this->render_question_item($item);
         }
 
-        $ret .= '</div>';
+        return "<div class=\"list-group\">{$contents}</div>";
+    }
 
-        return $ret;
+    /**
+     * Render a question.
+     */
+    public function render_question_item($item) {
+        // TODO - display replies too.
+        $title = $item->title;
+        $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
+
+        $contents = \html_writer::tag('h4', "{$title} {$votes}", array('class' => 'list-group-item-heading'));
+        $contents .= \html_writer::tag('p', 'Posted by ' . $item->get_user(), array('class' => 'list-group-item-text'));
+
+        $link = $item->get_view_link();
+        return "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
     }
 }
