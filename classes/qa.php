@@ -88,7 +88,7 @@ class qa
     /**
      * Post a new question.
      */
-    public function post_question($title, $contents, $anonymous = 0) {
+    public function post_question($title, $description, $anonymous = 0) {
         global $DB, $USER, $PAGE;
 
         $question = new \stdClass();
@@ -96,7 +96,7 @@ class qa
         $question->userid = $USER->id;
         $question->anonymous = $anonymous;
         $question->title = $title;
-        $question->contents = $contents;
+        $question->description = $description;
         $question->timecreated = time();
         $question->timemodified = time();
 

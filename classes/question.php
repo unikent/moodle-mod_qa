@@ -83,7 +83,7 @@ class question
     /**
      * Returns a vote count.
      */
-    public function get_vote_count() {
+    public function count_votes() {
         global $DB;
 
         if (!isset($this->votes)) {
@@ -98,7 +98,7 @@ class question
     /**
      * Returns a reply count.
      */
-    public function get_reply_count() {
+    public function count_replies() {
         global $DB;
 
         if (!isset($this->replies)) {
