@@ -29,7 +29,7 @@ require_once(dirname(__FILE__) . '/lib.php');
 
 $id = required_param('id', PARAM_INT);
 list($course, $cm) = get_course_and_cm_from_cmid($id, 'qa');
-$qa = $DB->get_record('qa', array('id' => $cm->instance));
+$qa = \mod_qa\qa::from_id($cm->instance);
 
 require_login($course, true, $cm);
 
@@ -60,8 +60,7 @@ $renderer = $PAGE->get_renderer('mod_qa');
 
 // Output list of questions.
 // TODO - order by votes.
-$qaobj = \mod_qa\qa::from_db($qa);
-$questions = $qaobj->get_questions();
+$questions = $qa->get_questions();
 if (!empty($questions)) {
     echo $renderer->render_list($questions);
 } else {

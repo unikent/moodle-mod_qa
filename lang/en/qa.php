@@ -42,6 +42,8 @@ $string['qanon'] = 'Post anonymously?';
 $string['qa:addinstance'] = 'Add a new QA activity';
 $string['qa:view'] = 'View a QA activity';
 $string['qa:submit'] = 'Submit questions to a QA activity';
+$string['qa:globalview'] = 'View any post in a QA activity';
+$string['qa:globalreply'] = 'Reply to any post in a QA activity';
 
 $string['postedby'] = 'Posted by {$a}';
 

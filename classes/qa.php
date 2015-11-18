@@ -66,6 +66,27 @@ class qa
     }
 
     /**
+     * Can we post anonymously?
+     */
+    public function can_post_anonymously() {
+        return $this->allowanonymous == 1;
+    }
+
+    /**
+     * Can we view any question?
+     */
+    public function has_global_view() {
+        return $this->globalview == 1;
+    }
+
+    /**
+     * Can students reply to any question?
+     */
+    public function has_global_reply() {
+        return $this->globalreply == 1;
+    }
+
+    /**
      * Returns questions.
      */
     public function get_questions() {
@@ -79,6 +100,7 @@ class qa
             $this->questions = array();
             foreach ($questions as $question) {
                 $this->questions[$question->id] = question::from_db($question);
+                $this->questions[$question->id]->qa = $this;
             }
         }
 

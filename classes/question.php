@@ -38,6 +38,7 @@ class question
     use traits\protecteddata;
     use traits\user;
 
+    public $qa;
     private $votes;
     private $replies;
 
@@ -61,11 +62,22 @@ class question
     public static function from_id($id) {
         global $DB;
 
-        $data = $DB->get_record('qa_question', array(
+        $data = $DB->get_record('qa_questions', array(
             'id' => $id
         ), '*', \MUST_EXIST);
 
         return new static($data);
+    }
+
+    /**
+     * Returns our parent qa object.
+     */
+    public function get_qa() {
+        if (!isset($this->qa)) {
+            $this->qa = qa::from_id($this->qaid);
+        }
+
+        return $this->qa;
     }
 
     /**
@@ -124,5 +136,33 @@ class question
      */
     public function is_anonymous() {
         return $this->anonymous > 0;
+    }
+
+    /**
+     * Can the current user view this question?
+     */
+    public function can_view() {
+        global $USER, $PAGE;
+
+        if ($USER->id == $this->userid) {
+            return true;
+        }
+
+        $qa = $this->get_qa();
+        return $qa->has_global_view() || has_capability('mod/qa:globalview', $PAGE->get_context());
+    }
+
+    /**
+     * Can the current user reply to this question?
+     */
+    public function can_reply() {
+        global $USER, $PAGE;
+
+        if ($USER->id == $this->userid) {
+            return true;
+        }
+
+        $qa = $this->get_qa();
+        return $qa->has_global_reply() || has_capability('mod/qa:globalreply', $PAGE->get_context());
     }
 }

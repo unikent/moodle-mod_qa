@@ -38,6 +38,14 @@ require_once($CFG->libdir.'/formslib.php');
  */
 class post_question extends \moodleform
 {
+    private $qa;
+
+    public function __construct($qa, $action=null, $customdata=null, $method='post', $target='', $attributes=null, $editable=true) {
+        $this->qa = $qa;
+
+        parent::__construct($action, $customdata, $method, $target, $attributes, $editable);
+    }
+
     /**
      * Form definition.
      */
@@ -56,7 +64,9 @@ class post_question extends \moodleform
         $mform->addElement('textarea', 'desc', get_string('qdesc', 'qa'));
         $mform->setType('desc', PARAM_TEXT);
 
-        $mform->addElement('checkbox', 'anon', get_string('qanon', 'qa'));
+        if ($this->qa->can_post_anonymously()) {
+            $mform->addElement('checkbox', 'anon', get_string('qanon', 'qa'));
+        }
 
         $this->add_action_buttons();
     }
