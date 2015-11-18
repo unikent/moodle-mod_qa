@@ -50,7 +50,7 @@ $string['postedby'] = 'Posted by {$a}';
 
 $string['askquestion'] = 'Ask a question.';
 $string['questionreply'] = 'Reply to this question.';
-$string['replyto'] = 'Reply: {$a}';
+$string['reply'] = 'Reply';
 
 $string['event:questionposted'] = 'Question posted';
 $string['event:questionposted_desc_anon'] = 'An anonymous user posted a question \'{$a}\'.';

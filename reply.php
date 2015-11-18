@@ -39,7 +39,7 @@ require_capability('mod/qa:submit', $PAGE->context);
 
 $PAGE->set_url('/mod/qa/reply.php', array('qaqid' => $qaqid));
 $PAGE->navbar->add($question->title, $question->get_view_url());
-$title = get_string('replyto', 'mod_qa', $question->title);
+$title = get_string('reply', 'mod_qa');
 $PAGE->navbar->add($title);
 $PAGE->set_title(format_string($title));
 $PAGE->set_heading(format_string($course->fullname));
