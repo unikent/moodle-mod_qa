@@ -35,7 +35,8 @@ defined('MOODLE_INTERNAL') || die();
  */
 class qa
 {
-    private $data;
+    use traits\protecteddata;
+
     private $questions;
 
     /**

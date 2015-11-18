@@ -49,6 +49,7 @@ $string['postedby'] = 'Posted by {$a}';
 
 $string['askquestion'] = 'Ask a question.';
 $string['questionreply'] = 'Reply to this question.';
+$string['replyto'] = 'Reply: {$a}';
 
 // Todo - decide on appropriate strings.
 $string['noquestions'] = 'There are no questions here yet!';

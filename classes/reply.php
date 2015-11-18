@@ -70,7 +70,7 @@ class reply
     /**
      * Return a view link.
      */
-    public function get_view_link() {
+    public function get_view_url() {
         return new \moodle_url('/mod/qa/question.php', array(
             'id' => $this->qaqid
         ));
