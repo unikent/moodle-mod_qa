@@ -15,18 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the version and other meta-info about the plugin.
+ * Services for mod_qa.
  *
  * @package    mod_qa
- * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk> <your@email.address>
+ * @copyright  2015 Skylar Kelty <S.Kelty@kent.ac.uk>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+$services = array(
+    'QA service' => array(
+        'functions' => array (
+            'mod_qa_question_vote'
+        ),
+        'requiredcapability' => '',
+        'restrictedusers' => 0,
+        'enabled' => 1
+    )
+);
 
-$plugin->component = 'mod_qa';
-$plugin->version = 2015111900;
-$plugin->release = 'v1.0';
-$plugin->requires = 2014051200;
-$plugin->maturity = MATURITY_ALPHA;
-$plugin->dependencies = array();
+$functions = array(
+    'mod_qa_question_vote' => array(
+        'classname'   => 'mod_qa\external\question',
+        'methodname'  => 'vote',
+        'description' => 'Toggle user vote for a question.',
+        'type'        => 'write',
+        'ajax'        => true
+    )
+);

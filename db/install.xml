@@ -68,9 +68,10 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="k_qaqid" TYPE="foreign" FIELDS="qaqid" REFTABLE="qa_question" REFFIELDS="id"/>
+        <KEY NAME="i_qaqid_user" TYPE="unique" FIELDS="qaqid, userid"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="i_userid" UNIQUE="true" FIELDS="userid"/>
+        <INDEX NAME="i_qaqid" UNIQUE="false" FIELDS="qaqid"/>
       </INDEXES>
     </TABLE>
   </TABLES>

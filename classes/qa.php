@@ -99,9 +99,32 @@ class qa
             ));
 
             $this->questions = array();
+            if (empty($questions)) {
+                return array();
+            }
+
+            $ids = array_keys($questions);
+            list($sql, $params) = $DB->get_in_or_equal($ids);
+            $replies = $DB->get_records_sql('SELECT * FROM {qa_replies} WHERE qaqid ' . $sql, $params);
+            $votes = $DB->get_records_sql('SELECT * FROM {qa_votes} WHERE qaqid ' . $sql, $params);
+
             foreach ($questions as $question) {
                 $this->questions[$question->id] = question::from_db($question);
                 $this->questions[$question->id]->qa = $this;
+
+                $this->questions[$question->id]->replies = array();
+                foreach ($replies as $reply) {
+                    if ($reply->qaqid == $question->id) {
+                        $this->questions[$question->id]->replies[$reply->id] = reply::from_db($reply);
+                    }
+                }
+
+                $this->questions[$question->id]->votes = array();
+                foreach ($votes as $vote) {
+                    if ($vote->qaqid == $question->id) {
+                        $this->questions[$question->id]->votes[$vote->userid] = true;
+                    }
+                }
             }
         }
 

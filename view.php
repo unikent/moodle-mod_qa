@@ -38,7 +38,7 @@ $event = \mod_qa\event\course_module_viewed::create(array(
     'context' => $PAGE->context,
 ));
 $event->add_record_snapshot('course', $PAGE->course);
-$event->add_record_snapshot('qa', $qa);
+$event->add_record_snapshot('qa', $qa->get_data());
 $event->trigger();
 
 // Print the page header.
@@ -46,6 +46,8 @@ $event->trigger();
 $PAGE->set_url('/mod/qa/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($qa->name));
 $PAGE->set_heading(format_string($course->fullname));
+$PAGE->requires->css('/mod/qa/styles.css');
+$PAGE->requires->js_call_amd('mod_qa/view', 'init', array());
 
 // Output starts here.
 echo $OUTPUT->header();
@@ -59,9 +61,15 @@ if ($qa->intro) {
 $renderer = $PAGE->get_renderer('mod_qa');
 
 // Output list of questions.
-// TODO - order by votes.
 $questions = $qa->get_questions();
 if (!empty($questions)) {
+    // Order by votes.
+    usort($questions, function($a, $b) {
+        $va = $a->count_votes();
+        $vb = $b->count_votes();
+        return $va == $vb ? 0 : ($va < $vb ? 1 : -1);
+    });
+
     echo $renderer->render_list($questions);
 } else {
     echo \html_writer::tag('p', get_string('noquestions', 'mod_qa'));

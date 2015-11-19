@@ -3,3 +3,7 @@
     font-style: italic;
     padding-top: 5px;
 }
+
+.fakelink {
+    cursor: pointer;
+}

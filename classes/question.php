@@ -39,8 +39,8 @@ class question
     use traits\user;
 
     public $qa;
-    private $votes;
-    private $replies;
+    public $votes;
+    public $replies;
 
     /**
      * Private constructor.
@@ -81,13 +81,13 @@ class question
     }
 
     /**
-     * Returns a vote count.
+     * Returns all votes.
      */
-    public function count_votes() {
+    public function get_votes() {
         global $DB;
 
         if (!isset($this->votes)) {
-            $this->votes = $DB->count_records('qa_votes', array(
+            $this->votes = $DB->get_records('qa_votes', array(
                 'qaqid' => $this->id
             ));
         }
@@ -96,7 +96,14 @@ class question
     }
 
     /**
-     * Returns a reply count.
+     * Returns a vote count.
+     */
+    public function count_votes() {
+        return count($this->get_votes());
+    }
+
+    /**
+     * Returns all replies.
      */
     public function get_replies() {
         global $DB;
@@ -157,6 +164,44 @@ class question
 
         $qa = $this->get_qa();
         return $qa->has_global_reply() || has_capability('mod/qa:globalreply', $PAGE->get_context());
+    }
+
+    /**
+     * Have we voted on this?
+     */
+    public function has_voted() {
+        global $DB, $USER;
+
+        return $DB->record_exists('qa_votes', array(
+            'qaqid' => $this->id,
+            'userid' => $USER->id
+        ));
+    }
+
+    /**
+     * Toggle user vote.
+     */
+    public function toggle_vote() {
+        global $DB, $USER;
+
+        if ($this->has_voted()) {
+            // Delete.
+            $DB->delete_records('qa_votes', array(
+                'qaqid' => $this->id,
+                'userid' => $USER->id
+            ));
+
+            return false;
+        }
+
+        // Create.
+        $DB->insert_record('qa_votes', array(
+            'qaqid' => $this->id,
+            'userid' => $USER->id,
+            'timecreated' => time()
+        ));
+
+        return true;
     }
 
     /**

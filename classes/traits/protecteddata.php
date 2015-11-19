@@ -50,4 +50,11 @@ trait protecteddata
     public function __isset($name) {
         return isset($this->data->$name);
     }
+
+    /**
+     * Return a stdClass of our data.
+     */
+    public function get_data() {
+        return $this->data;
+    }
 }

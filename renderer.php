@@ -47,16 +47,22 @@ class mod_qa_renderer extends plugin_renderer_base
     public function render_question_item($item) {
         $title = s($item->title);
 
-        $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
-        // TODO - votes on left with arrow
-
         $replies = \html_writer::tag('span', get_string('replies', 'mod_qa', $item->count_replies()), array('class' => 'badge'));
 
         $contents = \html_writer::tag('h4', "{$title} {$replies}", array('class' => 'list-group-item-heading'));
         $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-text'));
 
-        $link = $item->get_view_url();
-        return \html_writer::link($link, $contents, array('class' => 'list-group-item'));
+        if ($item->has_voted()) {
+            $tools = \html_writer::tag('span', \html_writer::tag('i', '', array('class' => 'fakelink vote voted fa fa-heart', 'data-id' => $item->id)));
+        } else {
+            $tools = \html_writer::tag('span', \html_writer::tag('i', '', array('class' => 'fakelink vote fa fa-heart-o', 'data-id' => $item->id)));
+        }
+
+        $tools = \html_writer::div($tools);
+
+        $link = \html_writer::link($item->get_view_url(), $contents, array('class' => 'item-link'));
+
+        return \html_writer::div($link . $tools, 'qa-questions list-group-item');
     }
 
     /**
