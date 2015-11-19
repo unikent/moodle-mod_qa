@@ -45,15 +45,18 @@ class mod_qa_renderer extends plugin_renderer_base
      * Render a question.
      */
     public function render_question_item($item) {
-        // TODO - display reply count too.
         $title = s($item->title);
-        $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
 
-        $contents = \html_writer::tag('h4', "{$title} {$votes}", array('class' => 'list-group-item-heading'));
+        $votes = \html_writer::tag('span', $item->count_votes(), array('class' => 'badge'));
+        // TODO - votes on left with arrow
+
+        $replies = \html_writer::tag('span', get_string('replies', 'mod_qa', $item->count_replies()), array('class' => 'badge'));
+
+        $contents = \html_writer::tag('h4', "{$title} {$replies}", array('class' => 'list-group-item-heading'));
         $contents .= \html_writer::tag('p', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-text'));
 
         $link = $item->get_view_url();
-        return "<a href=\"{$link}\" class=\"list-group-item\">{$contents}</span></a>";
+        return \html_writer::link($link, $contents, array('class' => 'list-group-item'));
     }
 
     /**
@@ -82,7 +85,7 @@ class mod_qa_renderer extends plugin_renderer_base
             $contents .= $this->render_reply($item);
         }
 
-        return "<div class=\"list-group\">{$contents}</div>";
+        return \html_writer::div($contents, 'list-group');
     }
 
     /**
@@ -92,6 +95,6 @@ class mod_qa_renderer extends plugin_renderer_base
         $link = $item->get_view_url();
         $contents = \html_writer::tag('h4', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-heading'));
         $contents .= \html_writer::tag('p', format_text($item->content, \FORMAT_HTML), array('class' => 'list-group-item-text'));
-        return "<div class=\"list-group-item\">{$contents}</div>";
+        return \html_writer::div($contents, 'list-group-item');
     }
 }
