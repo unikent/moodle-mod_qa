@@ -40,6 +40,13 @@ $string['qdesc'] = 'Description';
 $string['qanon'] = 'Post anonymously';
 $string['qrdesc'] = 'Contents';
 
+$string['extrasettings'] = 'Extra settings';
+$string['allowanonymous'] = 'Allow anonymous posts';
+$string['globalview'] = 'Global view';
+$string['globalview_help'] = 'Allow students to view all questions';
+$string['globalreply'] = 'Global reply';
+$string['globalreply_help'] = 'Allow students to reply to any question';
+
 $string['qa:addinstance'] = 'Add a new QA activity';
 $string['qa:view'] = 'View a QA activity';
 $string['qa:submit'] = 'Submit questions to a QA activity';

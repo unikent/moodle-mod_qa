@@ -55,7 +55,7 @@ class post_reply extends \moodleform
         $mform->addElement('hidden', 'qaqid');
         $mform->setType('qaqid', PARAM_INT);
 
-        $mform->addElement('textarea', 'contents', get_string('qrdesc', 'qa'));
+        $mform->addElement('editor', 'contents', get_string('qrdesc', 'qa'));
         $mform->setType('contents', PARAM_TEXT);
 
         if ($this->question->get_qa()->can_post_anonymously()) {

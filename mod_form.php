@@ -62,6 +62,14 @@ class mod_qa_mod_form extends moodleform_mod
             $this->add_intro_editor();
         }
 
+        $mform->addElement('header', 'extrasettings', get_string('extrasettings', 'qa'));
+
+        $mform->addElement('checkbox', 'allowanonymous', get_string('allowanonymous', 'qa'));
+        $mform->addElement('checkbox', 'globalview', get_string('globalview', 'qa'));
+        $mform->addHelpButton('globalview', 'globalview', 'qa');
+        $mform->addElement('checkbox', 'globalreply', get_string('globalreply', 'qa'));
+        $mform->addHelpButton('globalreply', 'globalreply', 'qa');
+
         // Add standard elements, common to all modules.
         $this->standard_coursemodule_elements();
 

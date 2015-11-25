@@ -52,6 +52,10 @@ if ($form->is_cancelled()) {
 
 if ($data = $form->get_data()) {
     $question = $qa->post_question($data->name, $data->desc, isset($data->anon) ? $data->anon : 0);
+
+    $data = $question->get_data();
+    $data->desc = file_save_draft_area_files($draftitemid, $context->id, 'mod_page', 'content', 0, $form->get_editor_options($PAGE->context), $data->desc);
+
     redirect(new \moodle_url('/mod/qa/question.php', array(
         'id' => $question->id
     )));

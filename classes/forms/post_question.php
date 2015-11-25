@@ -50,6 +50,8 @@ class post_question extends \moodleform
      * Form definition.
      */
     protected function definition() {
+        global $PAGE;
+
         $mform = $this->_form;
 
         $mform->addElement('hidden', 'qaid');
@@ -61,7 +63,7 @@ class post_question extends \moodleform
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $mform->addElement('textarea', 'desc', get_string('qdesc', 'qa'));
+        $mform->addElement('editor', 'desc', get_string('qdesc', 'qa'), null, $this->get_editor_options($PAGE->context));
         $mform->setType('desc', PARAM_TEXT);
 
         if ($this->qa->can_post_anonymously()) {
@@ -71,5 +73,11 @@ class post_question extends \moodleform
         $this->set_data(array('qaid' => $this->qa->id));
 
         $this->add_action_buttons();
+    }
+
+    public function get_editor_options($context) {
+        return array(
+           'maxfiles' => EDITOR_UNLIMITED_FILES
+        );
     }
 }
