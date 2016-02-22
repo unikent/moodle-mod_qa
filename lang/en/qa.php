@@ -49,6 +49,7 @@ $string['globalreply_help'] = 'Allow students to reply to any question';
 
 $string['qa:addinstance'] = 'Add a new QA activity';
 $string['qa:view'] = 'View a QA activity';
+$string['qa:vote'] = 'Vote for a QA activity';
 $string['qa:submit'] = 'Submit questions to a QA activity';
 $string['qa:globalview'] = 'View any post in a QA activity';
 $string['qa:globalreply'] = 'Reply to any post in a QA activity';

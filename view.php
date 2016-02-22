@@ -76,8 +76,10 @@ if (!empty($questions)) {
 }
 
 // New question link.
-$url = new \moodle_url('/mod/qa/ask.php', array('qaid' => $qa->id));
-echo \html_writer::tag('p', \html_writer::link($url, get_string('askquestion', 'mod_qa')));
+if (has_capability('mod/qa:submit', $PAGE->context)) {
+    $url = new \moodle_url('/mod/qa/ask.php', array('qaid' => $qa->id));
+    echo \html_writer::tag('p', \html_writer::link($url, get_string('askquestion', 'mod_qa')));
+}
 
 // Finish the page.
 echo $OUTPUT->footer();

@@ -84,7 +84,9 @@ class question extends external_api
         $qaqid = $params['qaqid'];
 
         $question = \mod_qa\question::from_id($qaqid);
-        return $question->toggle_vote(); // TODO - access check.
+        require_capability('mod/qa:vote', $question->get_context());
+
+        return $question->toggle_vote();
     }
 
     /**

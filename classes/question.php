@@ -38,6 +38,8 @@ class question
     use traits\protecteddata;
     use traits\user;
 
+    private $cmid;
+    private $context;
     public $qa;
     public $votes;
     public $replies;
@@ -78,6 +80,30 @@ class question
         }
 
         return $this->qa;
+    }
+
+    /**
+     * Returns our CMID.
+     */
+    public function get_cmid() {
+        if (!isset($this->cmid)) {
+            list($course, $cm) = get_course_and_cm_from_instance($this->id, 'qa');
+            $this->cmid = $cm->id;
+        }
+
+        return $this->cmid;
+    }
+
+    /**
+     * Returns our context.
+     */
+    public function get_context() {
+        if (!isset($this->context)) {
+            $cmid = $this->get_cmid();
+            $this->context = \context_module::instance($cmid);
+        }
+
+        return $this->context;
     }
 
     /**
@@ -139,31 +165,44 @@ class question
     }
 
     /**
+     * Returns true if we are able to vote.
+     */
+    public function can_vote() {
+        global $USER;
+
+        if ($USER->id == $this->userid) {
+            return false;
+        }
+
+        return has_capability('mod/qa:globalview', $this->get_context());
+    }
+
+    /**
      * Can the current user view this question?
      */
     public function can_view() {
-        global $USER, $PAGE;
+        global $USER;
 
         if ($USER->id == $this->userid) {
             return true;
         }
 
         $qa = $this->get_qa();
-        return $qa->has_global_view() || has_capability('mod/qa:globalview', $PAGE->get_context());
+        return $qa->has_global_view() || has_capability('mod/qa:globalview', $this->get_context());
     }
 
     /**
      * Can the current user reply to this question?
      */
     public function can_reply() {
-        global $USER, $PAGE;
+        global $USER;
 
         if ($USER->id == $this->userid) {
             return true;
         }
 
         $qa = $this->get_qa();
-        return $qa->has_global_reply() || has_capability('mod/qa:globalreply', $PAGE->get_context());
+        return $qa->has_global_reply() || has_capability('mod/qa:globalreply', $this->get_context());
     }
 
     /**
