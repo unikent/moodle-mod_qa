@@ -54,7 +54,7 @@ if ($form->is_cancelled()) {
 }
 
 if ($data = $form->get_data()) {
-    $question->post_reply($data->contents, isset($data->anon) ? $data->anon : 0);
+    $question->post_reply($data->contents['text'], isset($data->anon) ? $data->anon : 0);
     redirect(new \moodle_url('/mod/qa/question.php', array(
         'id' => $question->id
     )));

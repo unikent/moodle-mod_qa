@@ -90,7 +90,9 @@ class mod_qa_renderer extends plugin_renderer_base
     public function render_question_replies($items) {
         $contents = '';
         foreach ($items as $item) {
-            $contents .= $this->render_reply($item);
+            if (!empty(trim($item->content))) {
+                $contents .= $this->render_reply($item);
+            }
         }
 
         return \html_writer::div($contents, 'list-group');
@@ -102,7 +104,7 @@ class mod_qa_renderer extends plugin_renderer_base
     public function render_reply($item) {
         $link = $item->get_view_url();
         $contents = \html_writer::tag('h4', get_string('postedby', 'mod_qa', $item->get_username()), array('class' => 'list-group-item-heading'));
-        $contents .= \html_writer::tag('p', format_text($item->content, \FORMAT_HTML), array('class' => 'list-group-item-text'));
+        $contents .= \html_writer::tag('p', format_text(trim($item->content), \FORMAT_HTML), array('class' => 'list-group-item-text'));
         return \html_writer::div($contents, 'list-group-item');
     }
 }
